@@ -2,6 +2,7 @@ package com.udacity.stockhawk.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 import com.udacity.stockhawk.R;
@@ -88,4 +89,19 @@ public final class PrefUtils {
         editor.apply();
     }
 
+    public static void addInvalidStock(Context context, String symbol) {
+        String key = context.getString(R.string.pref_invalid_stock_key);
+
+        Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putString(key, symbol);
+        editor.apply();
+    }
+
+    public static void removeInvalidStock(Context context, String symbol) {
+        String key = context.getString(R.string.pref_invalid_stock_key);
+
+        Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.remove(key);
+        editor.apply();
+    }
 }

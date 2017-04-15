@@ -55,7 +55,7 @@ public final class QuoteSyncJob {
             stockCopy.addAll(stockPref);
             String[] stockArray = stockPref.toArray(new String[stockPref.size()]);
 
-            Timber.d(stockCopy.toString());
+            Timber.d("Stocks to sync: " + stockCopy.toString());
 
             if (stockArray.length == 0) {
                 return;
@@ -71,9 +71,14 @@ public final class QuoteSyncJob {
             while (iterator.hasNext()) {
                 String symbol = iterator.next();
 
-
                 Stock stock = quotes.get(symbol);
                 StockQuote quote = stock.getQuote();
+
+                if (quote.getPrice() == null) {
+                    Timber.d("Invalid Stock: " + symbol);
+                    PrefUtils.addInvalidStock(context, symbol);
+                    continue;
+                }
 
                 float price = quote.getPrice().floatValue();
                 float change = quote.getChange().floatValue();
@@ -153,8 +158,8 @@ public final class QuoteSyncJob {
             context.startService(nowIntent);
         } else {
 
-            JobInfo.Builder builder = new JobInfo.Builder(ONE_OFF_ID, new ComponentName(context, QuoteJobService.class));
-
+            JobInfo.Builder builder = new JobInfo.Builder(ONE_OFF_ID,
+                    new ComponentName(context, QuoteJobService.class));
 
             builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                     .setBackoffCriteria(INITIAL_BACKOFF, JobInfo.BACKOFF_POLICY_EXPONENTIAL);

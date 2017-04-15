@@ -1,10 +1,13 @@
 package com.udacity.stockhawk.ui;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -13,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +34,10 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener,
-        StockAdapter.StockAdapterOnClickHandler {
+        StockAdapter.StockAdapterOnClickHandler,
+        OnSharedPreferenceChangeListener {
+
+    private static final String INVALID_STOCK = "";
 
     private static final int STOCK_LOADER = 0;
 
@@ -73,7 +80,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -85,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         }).attachToRecyclerView(stockRecyclerView);
 
-
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
 
     private boolean networkUp() {
@@ -121,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     void addStock(String symbol) {
-        if (symbol != null && !symbol.isEmpty()) {
+        if (isValidSymbol(symbol)) {
 
             if (networkUp()) {
                 swipeRefreshLayout.setRefreshing(true);
@@ -133,6 +141,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             PrefUtils.addStock(this, symbol);
             QuoteSyncJob.syncImmediately(this);
         }
+    }
+
+    private boolean isValidSymbol(String symbol) {
+        boolean valid = true;
+
+        if (TextUtils.isEmpty(symbol)) {
+            Toast.makeText(this, getString(R.string.error_empty_symbol), Toast.LENGTH_SHORT).show();
+            valid = false;
+        } else if (symbol.split(" ").length > 1) {
+            Toast.makeText(this, getString(R.string.error_multiple_symbols), Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+
+        return valid;
     }
 
     @Override
@@ -189,5 +211,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences pref, String key) {
+        String invalidStockKey = getString(R.string.pref_invalid_stock_key);
+        if (key.equals(invalidStockKey)) {
+            String symbol = pref.getString(key, INVALID_STOCK);
+            if (symbol.equals(INVALID_STOCK)) {
+                return;
+            }
+
+            Toast.makeText(this, getString(R.string.error_stock_not_found, symbol), Toast.LENGTH_SHORT).show();
+
+            PrefUtils.removeStock(this, symbol);
+            PrefUtils.removeInvalidStock(this, symbol);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 }
