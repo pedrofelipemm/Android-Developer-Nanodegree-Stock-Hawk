@@ -39,4 +39,6 @@
     <string name="error_empty_symbol">Please provide a symbol.</string>
     <string name="error_multiple_symbols">Enter one symbol at a time please.</string>
 
+    <string name="btn_add_new_stock_content_description">Button to add new stock in the list.</string>
+
 </resources>
