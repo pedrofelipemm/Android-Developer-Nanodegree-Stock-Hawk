@@ -1,3 +1,8 @@
 <resources>
     <dimen name="activity_horizontal_margin">16dp</dimen>
+
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_stocks_default_height">180dp</dimen>
+    <dimen name="widget_stocks_min_resize_height">60dp</dimen>
+    <dimen name="widget_stocks_default_width">294dp</dimen>
 </resources>

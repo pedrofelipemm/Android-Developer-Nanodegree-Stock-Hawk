@@ -41,4 +41,6 @@
 
     <string name="btn_add_new_stock_content_description">Button to add new stock in the list.</string>
 
+    <string name="widget_empty_stocks_list">There is no stocks available</string>
+
 </resources>
