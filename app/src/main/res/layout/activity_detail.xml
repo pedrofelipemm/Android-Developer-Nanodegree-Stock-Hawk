@@ -33,30 +33,49 @@
                 app:layout_collapseMode="pin"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="90dp"
                 android:layout_marginEnd="10sp"
+                android:layout_marginStart="10sp"
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/detail_price"
-                    style="@style/BidPriceTextStyle"
+                    android:id="@+id/detail_symbol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20sp"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
                     tools:text="1000.00"/>
 
-                <TextView
-                    android:id="@+id/detail_change"
-                    style="@style/PercentChangeTextStyle"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/percent_change_pill_green"
-                    android:paddingEnd="3dp"
-                    android:paddingStart="3dp"
-                    tools:text="100%"/>
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/detail_price"
+                        style="@style/BidPriceTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20sp"
+                        tools:text="1000.00"/>
+
+                    <TextView
+                        android:id="@+id/detail_change"
+                        style="@style/PercentChangeTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/percent_change_pill_green"
+                        android:paddingEnd="3dp"
+                        android:paddingStart="3dp"
+                        tools:text="100%"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -92,7 +111,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    //TODO graphs here
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/detail_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:layout_margin="@dimen/default_margin"/>
 
                 </LinearLayout>
 

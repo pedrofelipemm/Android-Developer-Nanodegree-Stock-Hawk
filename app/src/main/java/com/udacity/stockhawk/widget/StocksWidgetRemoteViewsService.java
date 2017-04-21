@@ -3,7 +3,6 @@ package com.udacity.stockhawk.widget;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Binder;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -12,9 +11,6 @@ import com.udacity.stockhawk.CurrencyUtils;
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract.Quote;
 
-import static com.udacity.stockhawk.ui.DetailActivity.EXTRA_CHANGE;
-import static com.udacity.stockhawk.ui.DetailActivity.EXTRA_PRICE;
-import static com.udacity.stockhawk.ui.DetailActivity.EXTRA_SYMBOL;
 
 public class StocksWidgetRemoteViewsService extends RemoteViewsService {
 
@@ -29,7 +25,6 @@ public class StocksWidgetRemoteViewsService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(final Intent intent) {
-        Log.d("PEDRO", this.getClass().getSimpleName() + " onGetViewFactory");
         return new RemoteViewsFactory() {
             private Cursor data = null;
 
@@ -79,9 +74,7 @@ public class StocksWidgetRemoteViewsService extends RemoteViewsService {
                 String change = CurrencyUtils.formatDollarWithPlus(changeDouble);
 
                 Intent fillInIntent = new Intent();
-                intent.putExtra(EXTRA_SYMBOL, symbol);
-                intent.putExtra(EXTRA_PRICE, price);
-                intent.putExtra(EXTRA_CHANGE, change);
+                fillInIntent.setData(Quote.makeUriForStock(symbol));
 
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_stocks_item);
                 views.setTextViewText(R.id.widget_symbol, symbol);

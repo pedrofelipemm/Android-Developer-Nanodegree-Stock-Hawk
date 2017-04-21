@@ -14,14 +14,11 @@ import android.widget.TextView;
 import com.udacity.stockhawk.CurrencyUtils;
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
+import com.udacity.stockhawk.data.Contract.Quote;
 import com.udacity.stockhawk.data.PrefUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.udacity.stockhawk.ui.DetailActivity.EXTRA_CHANGE;
-import static com.udacity.stockhawk.ui.DetailActivity.EXTRA_PRICE;
-import static com.udacity.stockhawk.ui.DetailActivity.EXTRA_SYMBOL;
 
 class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
 
@@ -87,9 +84,7 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra(EXTRA_SYMBOL, symbol);
-                intent.putExtra(EXTRA_PRICE, price);
-                intent.putExtra(EXTRA_CHANGE, change);
+                intent.setData(Quote.makeUriForStock(symbol));
 
                 context.startActivity(intent);
             }
