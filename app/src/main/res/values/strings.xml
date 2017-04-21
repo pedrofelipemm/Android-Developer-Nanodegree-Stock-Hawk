@@ -20,7 +20,7 @@
     <string name="default_stocks_facebook" translatable="false">FB</string>
 
 
-    <string name="action_change_units"  translatable="false">@string/pref_display_mode_key</string>
+    <string name="action_change_units" translatable="false">@string/pref_display_mode_key</string>
 
 
     <string name="dialog_title">Add Stock</string>
@@ -34,7 +34,7 @@
     <string name="toast_stock_added_no_connectivity">Symbol %s added. Will refresh when network available.</string>
     <string name="toast_no_connectivity">Will refresh when network available.</string>
 
-    <string name="error_stock_not_found">Stock not found for symbol: <xliff:g id="symbol" example="GOOG">%s</xliff:g></string>
+    <string name="error_stock_not_found">Stock not found for symbol: <xliff:g example="GOOG" id="symbol">%s</xliff:g></string>
 
     <string name="error_empty_symbol">Please provide a symbol.</string>
     <string name="error_multiple_symbols">Enter one symbol at a time please.</string>
@@ -42,5 +42,6 @@
     <string name="btn_add_new_stock_content_description">Button to add new stock in the list.</string>
 
     <string name="widget_empty_stocks_list">There is no stocks available</string>
+    <string name="details_background_collapsing_toolbar">Background blue panel.</string>
 
 </resources>

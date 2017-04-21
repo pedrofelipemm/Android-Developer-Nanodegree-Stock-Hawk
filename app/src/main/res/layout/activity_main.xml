@@ -16,8 +16,8 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:paddingStart="@dimen/activity_horizontal_margin"/>
+            android:paddingEnd="@dimen/default_margin2x"
+            android:paddingStart="@dimen/default_margin2x"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

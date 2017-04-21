@@ -1,8 +1,12 @@
 <resources>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="default_margin2x">16dp</dimen>
 
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_stocks_default_height">180dp</dimen>
     <dimen name="widget_stocks_min_resize_height">60dp</dimen>
     <dimen name="widget_stocks_default_width">294dp</dimen>
+    <dimen name="collapsing_toolbar_height">200dp</dimen>
+    <dimen name="cardview_radius">4dp</dimen>
+    <dimen name="cardview_elevation">4dp</dimen>
 </resources>

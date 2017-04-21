@@ -12,6 +12,10 @@ import com.udacity.stockhawk.CurrencyUtils;
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract.Quote;
 
+import static com.udacity.stockhawk.ui.DetailActivity.EXTRA_CHANGE;
+import static com.udacity.stockhawk.ui.DetailActivity.EXTRA_PRICE;
+import static com.udacity.stockhawk.ui.DetailActivity.EXTRA_SYMBOL;
+
 public class StocksWidgetRemoteViewsService extends RemoteViewsService {
 
     private static final String[] QUOTE_COLUMNS = {
@@ -64,22 +68,29 @@ public class StocksWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public RemoteViews getViewAt(int position) {
-                if (position == AdapterView.INVALID_POSITION ||
-                        data == null || !data.moveToPosition(position)) {
+                if (position == AdapterView.INVALID_POSITION || data == null || !data.moveToPosition(position)) {
                     return null;
                 }
 
                 String symbol = data.getString(Quote.POSITION_SYMBOL);
-                double price = data.getDouble(Quote.POSITION_PRICE);
-                double change = data.getDouble(Quote.POSITION_PERCENTAGE_CHANGE);
+                String price = CurrencyUtils.formatDollar(data.getDouble(Quote.POSITION_PRICE));
+
+                double changeDouble = data.getDouble(Quote.POSITION_PERCENTAGE_CHANGE);
+                String change = CurrencyUtils.formatDollarWithPlus(changeDouble);
 
                 Intent fillInIntent = new Intent();
-                intent.setData(Quote.makeUriForStock(symbol));
+                intent.putExtra(EXTRA_SYMBOL, symbol);
+                intent.putExtra(EXTRA_PRICE, price);
+                intent.putExtra(EXTRA_CHANGE, change);
 
                 RemoteViews views = new RemoteViews(getPackageName(), R.layout.widget_stocks_item);
                 views.setTextViewText(R.id.widget_symbol, symbol);
-                views.setTextViewText(R.id.widget_price, CurrencyUtils.formatDollar(price));
-                views.setTextViewText(R.id.widget_change, CurrencyUtils.formatDollarWithPlus(change));
+                views.setTextViewText(R.id.widget_price, price);
+                views.setTextViewText(R.id.widget_change, change);
+
+                views.setInt(R.id.change, "setBackgroundResource",
+                        changeDouble > 0 ? R.drawable.percent_change_pill_green : R.drawable.percent_change_pill_red);
+
                 views.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
 
                 return views;

@@ -45,6 +45,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="com.udacity.stockhawk.ACTION_DATA_UPDATED"/>
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_stocks"/>
@@ -53,6 +54,14 @@
         <service
             android:name=".widget.StocksWidgetRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <activity
+            android:name=".ui.DetailActivity"
+            android:theme="@style/DetailsAppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>
