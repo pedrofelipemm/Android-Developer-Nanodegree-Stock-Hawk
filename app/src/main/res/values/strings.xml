@@ -44,4 +44,7 @@
     <string name="widget_empty_stocks_list">There is no stocks available</string>
     <string name="details_background_collapsing_toolbar">Background blue panel.</string>
 
+    <string name="detail_activity_title" translatable="false" />
+    <string name="detail_graph_legend">Stock value</string>
+
 </resources>
