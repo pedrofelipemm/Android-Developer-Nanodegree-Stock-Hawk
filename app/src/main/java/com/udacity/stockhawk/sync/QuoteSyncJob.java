@@ -73,9 +73,9 @@ public final class QuoteSyncJob {
                 String symbol = iterator.next();
 
                 Stock stock = quotes.get(symbol);
-                StockQuote quote = stock.getQuote();
+                StockQuote quote = null;
 
-                if (quote.getPrice() == null) {
+                if (stock == null || !isValidQuote(quote = stock.getQuote())) {
                     Timber.d("Invalid Stock: " + symbol);
                     PrefUtils.addInvalidStock(context, symbol);
                     continue;
@@ -121,6 +121,10 @@ public final class QuoteSyncJob {
         } catch (IOException exception) {
             Timber.e(exception, "Error fetching stock quotes");
         }
+    }
+
+    private static boolean isValidQuote(StockQuote quote) {
+        return quote != null && quote.getPrice() != null && quote.getSymbol().matches("[a-zA-Z]+");
     }
 
     private static void schedulePeriodic(Context context) {
